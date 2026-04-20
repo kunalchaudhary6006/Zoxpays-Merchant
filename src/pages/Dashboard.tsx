@@ -9,6 +9,10 @@ import Withdrawal from './admin/Withdrawal';
 import Recharge from './admin/Recharge';
 import WithdrawalRequest from './admin/WithdrawalRequest';
 import Document from './admin/Document';
+import BankStatement from './admin/BankStatement';
+import BankWithdrawalRequest from './admin/BankWithdrawalRequest';
+import LoginPasswordChange from './admin/LoginPasswordChange';
+import WithdrawalPasswordChange from './admin/WithdrawalPasswordChange';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -26,6 +30,10 @@ export default function Dashboard() {
       case 'recharge': return <Recharge />;
       case 'withdrawal_request': return <WithdrawalRequest />;
       case 'document': return <Document />;
+      case 'bank_statement': return <BankStatement />;
+      case 'bank_withdrawal_request': return <BankWithdrawalRequest />;
+      case 'change_login_password': return <LoginPasswordChange />;
+      case 'change_withdrawal_password': return <WithdrawalPasswordChange />;
       default: return <WithdrawTransactions />;
     }
   };
@@ -38,7 +46,11 @@ export default function Dashboard() {
     { id: 'withdrawal_new', label: 'Withdrawal' },
     { id: 'recharge', label: 'Recharge' },
     { id: 'withdrawal_request', label: 'Withdrawal Requests' },
-    { id: 'document', label: 'API Documents' }
+    { id: 'document', label: 'API Documents' },
+    { id: 'bank_statement', label: 'Bank Statement' },
+    { id: 'bank_withdrawal_request', label: 'Bank Withdrawal Request' },
+    { id: 'change_login_password', label: 'Update Login Password' },
+    { id: 'change_withdrawal_password', label: 'Update Withdraw Password' }
   ];
 
   return (
