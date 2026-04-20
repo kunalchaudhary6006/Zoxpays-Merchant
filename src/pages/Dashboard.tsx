@@ -5,6 +5,10 @@ import WithdrawTransactions from './admin/WithdrawTransactions';
 import CollectionTransactions from './admin/CollectionTransactions';
 import AdminAccounts from './admin/AdminAccounts';
 import CreateMerchant from './admin/CreateMerchant';
+import Withdrawal from './admin/Withdrawal';
+import Recharge from './admin/Recharge';
+import WithdrawalRequest from './admin/WithdrawalRequest';
+import Document from './admin/Document';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -18,6 +22,10 @@ export default function Dashboard() {
       case 'collection': return <CollectionTransactions />;
       case 'accounts': return <AdminAccounts />;
       case 'create_merchant': return <CreateMerchant />;
+      case 'withdrawal_new': return <Withdrawal />;
+      case 'recharge': return <Recharge />;
+      case 'withdrawal_request': return <WithdrawalRequest />;
+      case 'document': return <Document />;
       default: return <WithdrawTransactions />;
     }
   };
@@ -26,7 +34,11 @@ export default function Dashboard() {
     { id: 'withdraw', label: 'Withdraw Transactions' },
     { id: 'collection', label: 'Collection Transactions' },
     { id: 'accounts', label: 'Admin Accounts' },
-    { id: 'create_merchant', label: 'Create with PG Settings' }
+    { id: 'create_merchant', label: 'Create with PG Settings' },
+    { id: 'withdrawal_new', label: 'Withdrawal' },
+    { id: 'recharge', label: 'Recharge' },
+    { id: 'withdrawal_request', label: 'Withdrawal Requests' },
+    { id: 'document', label: 'API Documents' }
   ];
 
   return (
