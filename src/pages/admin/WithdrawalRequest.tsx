@@ -1,6 +1,10 @@
 import React from 'react';
+import { useMerchant } from '../../context/MerchantContext';
 
 export default function WithdrawalRequest() {
+  const { transactions, approveWithdrawal, rejectWithdrawal } = useMerchant();
+  const requests = transactions.filter(t => t.type === 'withdrawal');
+
   return (
     <div className="w-full animate-in fade-in duration-300">
       <div className="mb-4">
@@ -17,7 +21,8 @@ export default function WithdrawalRequest() {
           <select className="border border-gray-200 rounded px-3 py-1.5 text-sm outline-none focus:border-[#0d6efd] bg-white text-gray-500">
             <option value="">Select Status</option>
             <option value="pending">Pending</option>
-            <option value="processing">Processing</option>
+            <option value="completed">Completed</option>
+            <option value="rejected">Rejected</option>
           </select>
         </div>
         
@@ -38,19 +43,49 @@ export default function WithdrawalRequest() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-gray-100 hover:bg-gray-50/50">
-                <td className="py-3 px-2 text-gray-600">REQ-83921</td>
-                <td className="py-3 px-2 text-gray-600 font-medium">¥ 5,000.00</td>
-                <td className="py-3 px-2 text-gray-600">Bank Transfer</td>
-                <td className="py-3 px-2">
-                   <span className="bg-[#ffc107] text-[#212529] text-[0.7rem] px-2 py-0.5 rounded shadow-sm">Pending</span>
-                </td>
-                <td className="py-3 px-2 text-gray-600">2026-04-20</td>
-                <td className="py-3 px-2 text-gray-600 flex gap-2">
-                  <button className="bg-[#198754] text-white px-2 py-1 rounded text-xs hover:bg-green-700">Approve</button>
-                  <button className="bg-[#dc3545] text-white px-2 py-1 rounded text-xs hover:bg-red-700">Reject</button>
-                </td>
-              </tr>
+              {requests.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-6 text-gray-500">No withdrawal requests found.</td>
+                </tr>
+              ) : (
+                requests.map(req => (
+                  <tr key={req.id} className="border-b border-gray-100 hover:bg-gray-50/50">
+                    <td className="py-3 px-2 text-gray-600 font-mono text-xs">{req.id}</td>
+                    <td className="py-3 px-2 text-gray-600 font-medium">¥ {req.amount.toFixed(2)}</td>
+                    <td className="py-3 px-2 text-gray-600">{req.method}</td>
+                    <td className="py-3 px-2">
+                       <span className={`text-[0.7rem] px-2 py-0.5 rounded shadow-sm text-white ${
+                         req.status === 'Pending' ? 'bg-[#ffc107] text-[#212529]' : 
+                         req.status === 'Completed' ? 'bg-[#198754]' : 'bg-[#dc3545]'
+                       }`}>
+                         {req.status}
+                       </span>
+                    </td>
+                    <td className="py-3 px-2 text-gray-600 text-xs">{req.date}</td>
+                    <td className="py-3 px-2 text-gray-600 flex gap-2">
+                      {req.status === 'Pending' && (
+                        <>
+                          <button 
+                            onClick={() => approveWithdrawal(req.id)}
+                            className="bg-[#198754] text-white px-2 py-1 rounded text-xs hover:bg-[#157347]"
+                          >
+                            Approve
+                          </button>
+                          <button 
+                            onClick={() => rejectWithdrawal(req.id)}
+                            className="bg-[#dc3545] text-white px-2 py-1 rounded text-xs hover:bg-[#b02a37]"
+                          >
+                            Reject
+                          </button>
+                        </>
+                      )}
+                      {req.status !== 'Pending' && (
+                        <span className="text-gray-400 text-xs italic">Processed</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
